@@ -22,10 +22,14 @@ app.get('/', function(req, res) {
 
 io.on('connection', function(socket){
   socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
+    console.log(msg);
+    setInterval(()=>{
+      io.emit('chat message', msg);
+    },1000)
+
   });
 });
-    
+
 
 http.listen(3000, function() {
   console.log('listening on *:3000');
