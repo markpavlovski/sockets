@@ -12,11 +12,14 @@
   <script>
     let socket = io()
     socket.emit('ready message')
+    socket.emit('new image plz')
+    setInterval(()=>socket.emit('new image plz'),1000)
     let image = document.querySelector('#transmitted-image')
     socket.on('imageConversionByServer', (data) => {
       image.setAttribute('src', data)
-      console.log("received new image")
+      console.log("image updated")
     })
+
   </script>
 
 </body>

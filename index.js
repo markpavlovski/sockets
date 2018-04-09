@@ -18,6 +18,12 @@ io.on('connection', function(socket){
   });
 
   sendImage(socket)
+
+  socket.on('new image plz', function(){
+    console.log('received request for a new image');
+    sendImage(socket)
+  });
+
   // setTimeout((socket) => sendImage(socket), 1000)
 })
 
@@ -25,6 +31,7 @@ function sendImage(socket){
   fs.readFile(path.resolve(__dirname, './image.jpg'), function(err, data){
     socket.emit('imageConversionByServer', "data:image/png;base64,"+ data.toString("base64"))
   })
+  console.log("new image sent")
 }
 
 
