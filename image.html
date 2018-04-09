@@ -4,57 +4,19 @@
 <head>
   <title>Socket.IO Image Transfer</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
-  <script
-  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
-  crossorigin="anonymous"></script>
 </head>
 
-<body>
-
-  <img id="img" width="40%">
-  <img id="img2" width="40%">
-
-
+<body style="background-color:#1a1a1a">
+  <img id="transmitted-image" style="display: block; width:80vh; height: 80vh; margin: 10vh auto">
 
   <script>
-    function b64(e) {
-      var t = "";
-      var n = new Uint8Array(e);
-      var r = n.byteLength;
-      for (var i = 0; i < r; i++) {
-        t += String.fromCharCode(n[i])
-      }
-      return window.btoa(t)
-    }
-
-    $(document).ready(function() {
-
-      var socket = io();
-
-      socket.on('imageConversionByClient', function(data) {
-        $("#img").attr("src", "data:image/png;base64," + b64(data.buffer));
-      });
-
-      socket.on('imageConversionByServer', function(data) {
-        $("#img2").attr("src", data);
-      });
-
-    });
-    // 
-    // $(function () {
-    //   var socket = io();
-    //   $('form').submit(function(){
-    //     socket.emit('chat message', $('#m').val());
-    //     $('#m').val('');
-    //     return false;
-    //   });
-    //   socket.on('chat message', function(msg){
-    //       $('#messages').append($('<li>').text(msg));
-    //   });
-    // });
-
+    let socket = io()
+    let image = document.querySelector('#transmitted-image')
+    socket.on('imageConversionByServer', (data) => {
+      image.setAttribute('src', data)
+    })
   </script>
+
 </body>
 
 </html>
