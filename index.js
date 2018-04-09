@@ -1,36 +1,37 @@
-var app = require('express')();
+//NodeJS
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
+var fs = require('fs');
 var io = require('socket.io')(http);
+var path=require('path')
 
-app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/index.html');
-});
 
-//
-// io.on('connection', function(socket) {
-//   console.log('a user connected');
-//   socket.on('disconnect', function() {
-//     console.log('user disconnected');
-//   });
-// });
-
-// io.on('connection', function(socket){
-//   socket.on('chat message', function(msg){
-//     console.log('message: ' + msg);
-//   });
-// });
+app.get('/', function(req,res){
+  res.sendFile(__dirname + '/image.html')
+})
 
 io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    console.log(msg);
-    setInterval(()=>{
-      io.emit('chat message', msg);
-    },1000)
 
-  });
-});
+  let readStream = fs.createReadStream(path.resolve(__dirname, './image.jpg'), {encoding: 'binary'})
+  let chunks = []
+  let delay = 10
 
+  readStream.on('readable', ()=>{
+    console.log('image loading')
+  })
 
-http.listen(3000, function() {
+  readStream.on('data', (chunk)=>{
+    chunks.push(chunk)
+    io.emit('img-chunk',chunk)
+  })
+
+  readStream.on('end', ()=>{
+    console.log('image loaded')
+  })
+
+})
+
+http.listen(3000, function(){
   console.log('listening on *:3000');
 });

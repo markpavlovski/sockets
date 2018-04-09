@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Socket.IO Image Transfer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+</head>
+
+<body>
+
+  <img id="img-stream2" src ="">
+
+
+  <script>
+
+
+      let socket = io()
+      let imgChunks = []
+
+      socket.on('img-chunk', (chunk)=>{
+        let img = document.querySelector('#img-stream2')
+        imgChunks.push(chunk)
+        img.setAttribute('src','data:image/jpeg;base64,' + window.btoa(imgChunks) )
+        console.log(imgChunks.length);
+      })
+
+
+  </script>
+</body>
+
+</html>
