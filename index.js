@@ -12,25 +12,13 @@ app.get('/', function(req,res){
 })
 
 io.on('connection', function(socket){
+  fs.readFile(path.resolve(__dirname, './image.jpg'), function(err, data){
+    socket.emit('imageConversionByClient', { image: true, buffer: data });
+    socket.emit('imageConversionByServer', "data:image/png;base64,"+ data.toString("base64"));
+  });
+});
 
-  let readStream = fs.createReadStream(path.resolve(__dirname, './image.jpg'), {encoding: 'binary'})
-  let chunks = []
-  let delay = 10
 
-  readStream.on('readable', ()=>{
-    console.log('image loading')
-  })
-
-  readStream.on('data', (chunk)=>{
-    chunks.push(chunk)
-    io.emit('img-chunk',chunk)
-  })
-
-  readStream.on('end', ()=>{
-    console.log('image loaded')
-  })
-
-})
 
 http.listen(3000, function(){
   console.log('listening on *:3000');

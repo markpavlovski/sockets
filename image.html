@@ -4,27 +4,43 @@
 <head>
   <title>Socket.IO Image Transfer</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+  crossorigin="anonymous"></script>
 </head>
 
 <body>
 
-  <img id="img-stream2" src ="">
+  <img id="img" width="40%">
+  <img id="img2" width="40%">
+
 
 
   <script>
+    function b64(e) {
+      var t = "";
+      var n = new Uint8Array(e);
+      var r = n.byteLength;
+      for (var i = 0; i < r; i++) {
+        t += String.fromCharCode(n[i])
+      }
+      return window.btoa(t)
+    }
 
+    $(document).ready(function() {
 
-      let socket = io()
-      let imgChunks = []
+      var socket = io();
 
-      socket.on('img-chunk', (chunk)=>{
-        let img = document.querySelector('#img-stream2')
-        imgChunks.push(chunk)
-        img.setAttribute('src','data:image/jpeg;base64,' + window.btoa(imgChunks) )
-        console.log(imgChunks.length);
-      })
+      socket.on('imageConversionByClient', function(data) {
+        $("#img").attr("src", "data:image/png;base64," + b64(data.buffer));
+      });
 
+      socket.on('imageConversionByServer', function(data) {
+        $("#img2").attr("src", data);
+      });
 
+    });
   </script>
 </body>
 
