@@ -11,6 +11,7 @@
 
   <script>
     let socket = io()
+    socket.emit('ready message')
     let image = document.querySelector('#transmitted-image')
     socket.on('imageConversionByServer', (data) => {
       image.setAttribute('src', data)
