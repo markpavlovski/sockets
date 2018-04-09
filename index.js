@@ -16,16 +16,13 @@ io.on('connection', function(socket){
   socket.on('ready message', function(){
     console.log('received ready message');
   });
-  // fs.readFile(path.resolve(__dirname, './image.jpg'), function(err, data){
-  //   socket.emit('imageConversionByClient', { image: true, buffer: data })
-  //   socket.emit('imageConversionByServer', "data:image/png;base64,"+ data.toString("base64"))
-  // })
+
   sendImage(socket)
+  // setTimeout((socket) => sendImage(socket), 1000)
 })
 
 function sendImage(socket){
   fs.readFile(path.resolve(__dirname, './image.jpg'), function(err, data){
-    socket.emit('imageConversionByClient', { image: true, buffer: data })
     socket.emit('imageConversionByServer', "data:image/png;base64,"+ data.toString("base64"))
   })
 }
