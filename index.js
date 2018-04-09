@@ -18,7 +18,16 @@ io.on('connection', function(socket){
   });
 });
 
-
+// 
+// io.on('connection', function(socket){
+//   socket.on('chat message', function(msg){
+//     console.log(msg);
+//     setInterval(()=>{
+//       io.emit('chat message', msg);
+//     },1000)
+//
+//   });
+// });
 
 
 http.listen(3000, function(){
